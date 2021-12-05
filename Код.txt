@@ -609,13 +609,15 @@ CASE WHEN country='USA' THEN 1 ELSE 0 END>= 4
 
 84.	SELECT C.name, A.N_1_10, A.N_11_21, A.N_21_30
 FROM (SELECT T.ID_comp,
-SUM(CASE WHEN DAY(P.date)<11 THEN 1 ELSE 0 END) AS N_1_10,
-SUM(CASE WHEN (DAY(P.date)>10 AND DAY(P.date)<21) THEN 1 ELSE 0 END) AS N_11_21,
-SUM(CASE WHEN DAY(P.date)>20 THEN 1 ELSE 0 END) AS N_21_30
-FROM Trip AS T JOIN
-Pass_in_trip AS P ON T.trip_no=P.trip_no AND CONVERT(char(6),P.date, 112)= '200304'
-GROUP BY T.ID_comp) AS A JOIN
-Company AS C ON A.ID_comp = C.ID_comp
+       SUM(CASE WHEN DAY(P.date) < 11 THEN 1 ELSE 0 END) AS N_1_10,
+       SUM(CASE WHEN (DAY(P.date) > 10 AND DAY(P.date) < 21) THEN 1 ELSE 0 END) AS N_11_21,
+       SUM(CASE WHEN DAY(P.date) > 20 THEN 1 ELSE 0 END) AS N_21_30
+      FROM Trip AS T JOIN
+       Pass_in_trip AS P ON T.trip_no = P.trip_no AND CONVERT(char(6), P.date, 112) = '200304'
+      GROUP BY T.ID_comp
+      ) AS A JOIN
+ Company AS C ON A.ID_comp = C.ID_comp
+ 
 85.	SELECT maker
 FROM product
 GROUP BY maker
